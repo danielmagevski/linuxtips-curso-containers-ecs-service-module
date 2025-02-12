@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn = aws_iam_role.service_execution_role.arn
   task_role_arn      = var.service_task_execution_role
 
-    dynamic "volume" {
+  dynamic "volume" {
     for_each = var.efs_volumes
 
     content {
