@@ -10,9 +10,9 @@ variable "service_name" {
 
 variable "container_image" {
   type        = string
-  description = "Nome da imagem do contêiner a ser implantada no serviço."
-  
+  description = "Imagem com tag para deployment da aplicação no ECS"
 }
+
 variable "cluster_name" {
   type        = string
   description = "Nome do cluster ECS onde o serviço será implantado."
@@ -83,10 +83,12 @@ variable "service_healthcheck" {
 variable "environment_variables" {
   type        = list(map(string))
   description = "Lista de variáveis de ambiente que serão passadas para o serviço."
+  default     = []
 }
 
 variable "capabilities" {
   type        = list(string)
+  default     = []
   description = "Lista de capacidades, como EC2 ou FARGATE"
 }
 
@@ -209,4 +211,16 @@ variable "scale_tracking_requests" {
   type        = number
   description = "Número alvo de solicitações por segundo (TPS) para o rastreamento de escala."
   default     = 0
+}
+
+variable "efs_volumes" {
+  type = list(object({
+    volume_name : string
+    file_system_id : string
+    file_system_root : string
+    mount_point : string
+    read_only : bool
+  }))
+  description = "Volumes EFS existentes para serem montados nas tasks do ECS"
+  default = []
 }
