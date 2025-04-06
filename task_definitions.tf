@@ -25,7 +25,6 @@ resource "aws_ecs_task_definition" "main" {
     }
   }
 
-
   container_definitions = jsonencode([
     {
       name   = var.service_name
@@ -40,7 +39,7 @@ resource "aws_ecs_task_definition" "main" {
           containerPort = var.service_port
           hostPort      = var.service_port
           protocol      = "tcp"
-        },
+        }
       ]
 
       logConfiguration = {
@@ -52,7 +51,17 @@ resource "aws_ecs_task_definition" "main" {
         }
       }
 
+      mountPoints = [
+        for volume in var.efs_volumes : {
+          sourceVolume  = volume.volume_name
+          containerPath = volume.mount_point
+          readOnly      = volume.read_only
+        }
+      ]
+
       environment = var.environment_variables
+
+      secrets = var.secrets
     }
   ])
 

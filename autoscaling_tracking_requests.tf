@@ -23,12 +23,3 @@ resource "aws_appautoscaling_policy" "target_tracking_requests" {
   }
 
 }
-
-
-
-
-
-
-
-
-
